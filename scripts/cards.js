@@ -1,5 +1,5 @@
 
-const initialCards1 = [
+const initialCards = [
   {
     name: "Porshe",
     link: "images/card.JPG",
