@@ -3,7 +3,7 @@ const cardTemplate = document.querySelector("#card-template");
 // @todo: DOM узлы
 const placesList = document.querySelector(".places__list");
 // @todo: Функция создания карточки
-function createCard(cardData, onDelete) {
+function createCard(cardData, deleteCard) {
   const templateContent = cardTemplate.content.cloneNode(true);
   const cardImage = templateContent.querySelector(".card__image");
   cardImage.src = cardData.link;
@@ -13,7 +13,7 @@ function createCard(cardData, onDelete) {
   const deleteButton = templateContent.querySelector(".card__delete-button");
   deleteButton.addEventListener("click", function () {
     const cardElement = deleteButton.closest(".places__item");
-    cardElement.remove();
+    deleteCard(cardElement);
   });
   return templateContent;
 }
