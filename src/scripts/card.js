@@ -12,8 +12,12 @@ function createCard(cardData, deleteCard) {
   cardImage.src = cardData.link;
   cardImage.alt = cardData.alt;
   const cardTitle = templateContent.querySelector(".card__title");
+
   cardTitle.textContent = cardData.name;
+  
   const deleteButton = templateContent.querySelector(".card__delete-button");
+  
+  
   deleteButton.addEventListener("click", function () {
     const cardElement = deleteButton.closest(".places__item");
     deleteCard(cardElement);
@@ -26,7 +30,7 @@ function createCard(cardData, deleteCard) {
 
     
   cardImage.addEventListener("click", function () {
-    openImagePopup(cardData.link, cardData.name, cardTitle.value);
+    openImagePopup(cardData.link, cardTitle.textContent);
   });
 
 

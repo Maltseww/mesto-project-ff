@@ -22,7 +22,6 @@ const placeNameInput = newCardForm.querySelector('input[name="place-name"]');
 const linkInput = newCardForm.querySelector('input[name="link"]');
 
 const popupImage = document.querySelector('.popup_type_image');
-//const popupContentImage = popupImage.querySelector('.popup__content_content_image');
 const popupImageDes = popupImage.querySelector('.popup__image');
 const popupCaption = popupImage.querySelector('.popup__caption');
 
@@ -84,18 +83,11 @@ function closePopupOnEsc(evt) {
 
     // функция открытия изображения
     
-     export function openImagePopup(link, name, cardTitle) {
-      popupImage.src = link;
-      popupImage.alt = name;
-      popupImageDes.src = link;
-      popupImageDes.alt = name;
-
-      popupCaption = cardTitle.value;
-       
-    
-
-      openPopup(popupImage);
-    }
+  export function openImagePopup(link, cardTitle) { 
+    popupImageDes.src = link;
+    popupCaption.innerText = cardTitle;
+    openPopup(popupImage);
+  }
     
     
 
