@@ -1,8 +1,7 @@
 const cardTemplate = document.querySelector("#card-template");
-const placesList = document.querySelector(".places__list");
-import { openImagePopup } from "/src/index.js";
 
-function createCard(cardData, deleteCard) {
+
+function createCard(cardData, deleteCard, openImagePopup, handleLikeClick) {
   const templateContent = cardTemplate.content.cloneNode(true);
   const cardImage = templateContent.querySelector(".card__image");
   cardImage.src = cardData.link;
@@ -20,12 +19,12 @@ function createCard(cardData, deleteCard) {
 
   const likeButton = templateContent.querySelector(".card__like-button");
   likeButton.addEventListener("click", function () {
-    likeButton.classList.toggle("card__like-button_is-active");
+    handleLikeClick(likeButton);
   });
 
-  cardImage.addEventListener("click", function () {
-    openImagePopup(cardData.link, cardTitle.textContent);
-  });
+  cardImage.addEventListener("click", function () { 
+    openImagePopup(cardData); 
+  }); 
 
   return templateContent;
 }
@@ -34,4 +33,4 @@ function deleteCard(card) {
   card.remove();
 }
 
-export { placesList, createCard, deleteCard };
+export {  createCard, deleteCard };
