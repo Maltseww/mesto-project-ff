@@ -46,33 +46,3 @@ function closePopup(popup) {
 
 
 
-// function closePopup(popup) {
-//   popup.classList.remove("popup_is-opened");
-//   document.removeEventListener("keydown", closePopupOnEsc);
-// }
-
-// function closePopupOnEsc(evt) {
-//   if (evt.key === "Escape") {
-//     const openedPopup = document.querySelector(".popup_is-opened");
-//     if (openedPopup) {
-//       closePopup(openedPopup);
-//     }
-//   }
-// }
-
-// // Функция для открытия попапа
-// function openPopup(popup) {
-//   popup.classList.add("popup_is-opened");
-//   document.addEventListener("keydown", closePopupOnEsc);
-// }
-
-// function closePopupOnOverlayClick(popup) {
-//     popup.addEventListener('click', (evt) => {
-//       if (evt.target === popup) {
-//         closePopup(popup);
-//       }
-//     });
-//   }
-  
-
-//   export { closePopup, closePopupOnOverlayClick, openPopup };

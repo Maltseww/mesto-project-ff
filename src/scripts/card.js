@@ -1,7 +1,7 @@
 const cardTemplate = document.querySelector("#card-template");
 
 
-function createCard(cardData, deleteCard, openImagePopup, handleLikeClick) {
+function createCard(cardData, deleteCard, openImagePopup,) {
   const templateContent = cardTemplate.content.cloneNode(true);
   const cardImage = templateContent.querySelector(".card__image");
   cardImage.src = cardData.link;
@@ -33,4 +33,8 @@ function deleteCard(card) {
   card.remove();
 }
 
-export {  createCard, deleteCard };
+function handleLikeClick(likeButton) {
+    likeButton.classList.toggle("card__like-button_is-active");
+  }
+
+export {  createCard, deleteCard, handleLikeClick};
