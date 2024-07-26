@@ -7,6 +7,14 @@ import {
   openPopup,
   closePopup,
 } from "./scripts/modal.js";
+import {getInitialCards} from "./scripts/api.js";
+import {createCardApi} from "./scripts/api.js"
+import {getProfileRender} from "./scripts/api.js"
+import {enableValidation, clearValidation} from "./scripts/validation.js"
+
+
+
+
 
 // Находим форму в DOM
 const formElementEditProfile = document.querySelector(
@@ -49,32 +57,43 @@ formElementEditProfile.addEventListener("submit", handleEditingSubmit);
 // функция для редактирования карточек
 function handleNewCardFormSubmit(evt) {
   evt.preventDefault();
-  const cardData = {
-    name: placeNameInput.value,
-    link: linkInput.value,
-  };
-  const cardElement = createCard(
+  // const cardData = {
+  //   name: placeNameInput.value,
+  //   link: linkInput.value,
+  // };
+  // const cardElement = createCard(
+  //   cardData,
+  //   deleteCard,
+  //   openImagePopup,
+  //   handleLikeClick
+  // );
+
+createCardApi(linkInput.value, placeNameInput.value).then(function(cardData){
+   const cardElement = createCard(
     cardData,
     deleteCard,
     openImagePopup,
     handleLikeClick
   );
   placesList.prepend(cardElement);
+})
+
+  
   closePopup(newCardPopup);
   newCardForm.reset();
 }
 
 newCardForm.addEventListener("submit", handleNewCardFormSubmit);
 
-initialCards.forEach(function (cardData) {
-  const cardElement = createCard(
-    cardData,
-    deleteCard,
-    openImagePopup,
-    handleLikeClick
-  );
-  placesList.appendChild(cardElement);
-});
+// initialCards.forEach(function (cardData) {
+//   const cardElement = createCard(
+//     cardData,
+//     deleteCard,
+//     openImagePopup,
+//     handleLikeClick
+//   );
+//   placesList.appendChild(cardElement);
+// });
 
 // функция открытия изображения
 
@@ -110,3 +129,20 @@ popupCloseButtons.forEach((button) => {
   closePopupOnCloseButton(popup);
   closePopupOnOverlayClick(popup);
 });
+
+
+Promise.all([getInitialCards(), ]).then(function(data){
+  const cards = data[0]
+  const profile = data[1]
+  cards.forEach(function(item){
+    console.log(item)
+    const cardElement = createCard(
+      item,
+      deleteCard,
+      openImagePopup,
+      handleLikeClick
+    );
+    placesList.appendChild(cardElement);
+  })
+  console.log(data)
+})
