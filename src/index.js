@@ -1,9 +1,9 @@
 import './styles/index.css';
-import {createCard, pushRemoveLike, deleteCard} from './scripts/card.js';
+import {createCard, pushRemoveLike, deleteCard, } from './scripts/card.js';
 import {openPopUp, closeButtonPopUp, closeOverlayPopUp, closePopUp} from './scripts/modal.js';
 
 import {enableValidation, clearValidation} from './scripts/validation.js';
-import {getMyProfile, getCards, editMyProfile, pushNewCard, shiftCard, changeAvatar} from './scripts/api.js';
+import {getMyProfile, getCards, editMyProfile, pushNewCard, shiftCard, changeAvatar, changeLike} from './scripts/api.js';
 import {renderLoading} from './scripts/utils.js';
 
 const buttonsClosePopUp = document.querySelectorAll('.popup__close');
@@ -63,7 +63,7 @@ Promise.all([getMyProfile(), getCards()])
     profileTitle.textContent = profile.name;
     profileDescription.textContent = profile.about;
     cards.forEach((card) => {
-      addCard(placesList, createCard(cardTemplate, card, placeCardData, pushRemoveLike, increaseSizeImage, profile._id, popUpDelCard))
+      addCard(placesList, createCard(cardTemplate, card, placeCardData, pushRemoveLike, increaseSizeImage, profile._id, popUpDelCard, openPopUp, changeLike))
     });
   }).catch((err) => {console.log(err)}); 
 
@@ -94,7 +94,7 @@ buttonNewCard.addEventListener('click', () => {
 formEditProfile.addEventListener('submit', () => { 
   renderLoading(true, buttonSubmitFormEdit);
   editMyProfile({name: nameInput.value, about: jobInput.value}).then(profile => {
-    submitEditProfileForm(profileTitle, profileDescription, profile.name, profile.about, popupEdit)
+    submitEditProfileForm(profile.name, profile.about)
   }).catch((err) => {console.log('Ошибка редактирования профиля ' + err)}).finally(() => {renderLoading(false, buttonSubmitFormEdit)}); 
 });
 
@@ -114,12 +114,12 @@ formCardPlace.addEventListener('submit', ()=>{
     name: cardName.value
   };
   return pushNewCard(placeNewData).then(card => {
-    createNewPlace(placesList, createCard(cardTemplate, card, placeCardData, pushRemoveLike, increaseSizeImage, card.owner._id, popUpDelCard), popUpNewCard);
+    createNewPlace( createCard(cardTemplate, card, placeCardData, pushRemoveLike, increaseSizeImage, card.owner._id, popUpDelCard, openPopUp, changeLike));
     formCardPlace.reset()
   }).catch((err) => {console.log('Ошибка в добавлении новой карточки ' + err)}).finally(() => {renderLoading(false, buttonSubmitFormCardPlace, 'Создать')});
 });
 
-formConfirmationDelCard.addEventListener('submit', () => submitConfirmationForm(placeCardData.idDelCard, placeCardData.cardForDel, popUpDelCard));
+formConfirmationDelCard.addEventListener('submit', () => submitConfirmationForm());
 
 function addCard(containerForCards, card) {
   containerForCards.append(card)
@@ -133,20 +133,20 @@ function increaseSizeImage(evt) {
   openPopUp(popUpImage);
 }
 
-function submitEditProfileForm(title, description, inputTitle, inputDescription,  popUpElement) {
-  title.textContent = inputTitle;
-  description.textContent = inputDescription;
-  closePopUp(popUpElement)
+function submitEditProfileForm( inputTitle, inputDescription) {
+  profileTitle.textContent = inputTitle;
+  profileDescription.textContent = inputDescription;
+  closePopUp(popupEdit)
 }
 
-function createNewPlace(containerForPlace, placeNewElement, popUpElement) {
-  containerForPlace.prepend(placeNewElement);
-  closePopUp(popUpElement)
+function createNewPlace( placeNewElement) {
+  placesList.prepend(placeNewElement);
+  closePopUp(popUpNewCard)
 }
 
-function submitConfirmationForm(id, card, popUp) {
-  shiftCard(id).then(() => {
-    deleteCard(card);
-    closePopUp(popUp);
+function submitConfirmationForm() {
+  shiftCard(placeCardData.idDelCard).then(() => {
+    deleteCard(placeCardData.cardForDel);
+    closePopUp(popUpDelCard);
   }).catch((err) => {console.log('Ошибка в удалении карточки ' + err)})
 }
