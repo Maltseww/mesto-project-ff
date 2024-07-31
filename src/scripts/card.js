@@ -1,7 +1,4 @@
-// import {changeLike} from './api.js';
-// import {openPopUp} from './modal.js';
-
-function createCard(templateElement, serverData, cardData, likeFunction, openPopupImage, profileId, popUpDelCard,openPopUp, likeChange) {
+function createCard(templateElement, serverData, cardData, likeFunction, increaseSizeImage, profileId, handleDeleteCard, likeChange) {
   const cardElement = getCardTemplate(templateElement, cardData.card);
   const cardImage = cardElement.querySelector(cardData.image); 
   const cardLikeButton = cardElement.querySelector(cardData.buttonLike);
@@ -10,22 +7,20 @@ function createCard(templateElement, serverData, cardData, likeFunction, openPop
   cardImage.src = serverData.link;
   cardImage.alt = serverData.name;
   cardLikeCounter.textContent = serverData.likes.length;
-  cardImage.addEventListener('click', openPopupImage);
+  cardImage.addEventListener('click', increaseSizeImage)
   cardElement.querySelector(cardData.title).textContent = serverData.name;
   if(checkLike(serverData.likes, profileId)) {
     cardLikeButton.classList.add(cardData.buttonLikeActive)
   } 
   if(serverData.owner._id === profileId) {
    buttonDelCard.addEventListener('click',(evt) => {
-    openPopUp(popUpDelCard);
-    cardData.idDelCard = serverData._id;
-    cardData.cardForDel = evt.target.closest(cardData.card)
+    handleDeleteCard(serverData._id, cardElement);
    })
   } else {
     buttonDelCard.remove();
   };
   cardLikeButton.addEventListener('click',(evt)=>likeFunction(evt, cardData.buttonLikeActive, cardLikeCounter, serverData, profileId,likeChange))
-  return cardElement
+  return cardElement;
 }
 
 function getCardTemplate(template, card) {
